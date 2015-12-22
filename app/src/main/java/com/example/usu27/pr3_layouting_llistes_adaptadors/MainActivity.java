@@ -149,7 +149,7 @@ private class ContactAdapter extends BaseAdapter {
         ViewInfo viewInfo = (ViewInfo) view.getTag();
         Producto contact = contacts.get(position);
         viewInfo.setContact(contact);
-        view.setOnClickListener(MainActivity.this);
+        //view.setOnClickListener(MainActivity.this);
         return view;
     }
 }
