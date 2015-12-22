@@ -1,7 +1,11 @@
 package com.example.usu27.pr3_layouting_llistes_adaptadors;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,10 +14,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import android.view.View.OnClickListener;
+
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+
+
+public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     String[] items ={"1:Cireres:Cireres vermelles:1.56:img000.jpg",
             "2:Plàtan:Plàtan boníssim:0.15:img001.jpg",
@@ -60,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
             productos.img = Uri.parse(item[4]);
             stock.add(productos);
         }
+        Spinner spiner = (Spinner) findViewById(R.id.spinner_prod);
+        spiner.setAdapter(new ContactAdapter(this, stock));
     }
 
     @Override
@@ -67,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     private class Producto {
@@ -89,7 +108,21 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    private class ViewInfo {
+        TextView textView1, textView2;
+        Producto contact;
 
+        public ViewInfo(View view) {
+            textView1 = (TextView) view.findViewById(R.id.textView1);
+            textView2 = (TextView) view.findViewById(R.id.textView2);
+        }
+
+        public void setContact(Producto contact) {
+            this.contact = contact;
+            textView1.setText(contact.name);
+            textView2.setText(Double.toString(contact.precio));
+        }
+    }
 private class ContactAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Producto> contacts;
@@ -114,7 +147,7 @@ private class ContactAdapter extends BaseAdapter {
             view.setTag(viewInfo);
         }
         ViewInfo viewInfo = (ViewInfo) view.getTag();
-        Contact contact = contacts.get(position);
+        Producto contact = contacts.get(position);
         viewInfo.setContact(contact);
         view.setOnClickListener(MainActivity.this);
         return view;
